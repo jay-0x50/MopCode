@@ -1,2 +1,2 @@
 # Axiom
-A C++ based experimental scripting language for game development.
+Axiom is an experimental scripting language designed for game development, built with C++.
