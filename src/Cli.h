@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 namespace mopcode
 {
 class Cli
@@ -9,5 +11,6 @@ public:
 
 private:
     static void printUsage();
+    static bool printTokens(const std::string& path);
 };
 }
