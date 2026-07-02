@@ -1,0 +1,23 @@
+function main(): void {
+    Print("MopCode Control Flow Test")
+    Attack("Boss", 3)
+    Print("Random rolls")
+
+    for i = 0, 4 {
+        Print(RandomInt(0, 10))
+    }
+}
+
+function Attack(target: string, count: int): void {
+    Log("Target: " + target)
+
+    if count > 1 {
+        SetState("ComboAttack")
+    } else {
+        SetState("SingleAttack")
+    }
+
+    for i = 1, count {
+        Print("Hit " + i)
+    }
+}

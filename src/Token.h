@@ -10,6 +10,7 @@ enum class TokenType
     Return,
     If,
     Else,
+    For,
     True,
     False,
     Int,
@@ -61,6 +62,8 @@ inline std::string tokenTypeName(TokenType type)
         return "IF";
     case TokenType::Else:
         return "ELSE";
+    case TokenType::For:
+        return "FOR";
     case TokenType::True:
         return "TRUE";
     case TokenType::False:

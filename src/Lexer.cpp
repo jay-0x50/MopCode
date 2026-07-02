@@ -14,6 +14,7 @@ const std::unordered_map<std::string, TokenType> keywords = {
     {"return", TokenType::Return},
     {"if", TokenType::If},
     {"else", TokenType::Else},
+    {"for", TokenType::For},
     {"true", TokenType::True},
     {"false", TokenType::False},
     {"int", TokenType::Int},
