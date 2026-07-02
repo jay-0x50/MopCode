@@ -24,26 +24,47 @@ bool Interpreter::runFile(const std::string& path) const
 
 bool Interpreter::executeSource(const std::string& source) const
 {
-    std::string output;
-    if (!tryReadPrintString(source, output))
+    const std::string callStart = "Print";
+    std::size_t searchStart = 0;
+    bool executedPrint = false;
+
+    while (true)
+    {
+        const auto printPos = source.find(callStart, searchStart);
+        if (printPos == std::string::npos)
+        {
+            break;
+        }
+
+        std::string output;
+        std::size_t nextIndex = printPos;
+        if (!tryReadPrintString(source, printPos, output, nextIndex))
+        {
+            std::cerr << "MopCode Error: invalid Print syntax\n";
+            return false;
+        }
+
+        std::cout << output << '\n';
+        executedPrint = true;
+        searchStart = nextIndex;
+    }
+
+    if (!executedPrint)
     {
         std::cerr << "MopCode Error: invalid Print syntax\n";
         return false;
     }
 
-    std::cout << output << '\n';
     return true;
 }
 
-bool Interpreter::tryReadPrintString(const std::string& source, std::string& output)
+bool Interpreter::tryReadPrintString(
+    const std::string& source,
+    std::size_t printPos,
+    std::string& output,
+    std::size_t& nextIndex)
 {
     const std::string callStart = "Print";
-    const auto printPos = source.find(callStart);
-    if (printPos == std::string::npos)
-    {
-        return false;
-    }
-
     std::size_t index = printPos + callStart.size();
     while (index < source.size() && std::isspace(static_cast<unsigned char>(source[index])))
     {
@@ -127,6 +148,7 @@ bool Interpreter::tryReadPrintString(const std::string& source, std::string& out
     }
 
     output = value;
+    nextIndex = index + 1;
     return true;
 }
 }

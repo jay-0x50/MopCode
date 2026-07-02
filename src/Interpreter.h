@@ -11,6 +11,10 @@ public:
 
 private:
     bool executeSource(const std::string& source) const;
-    static bool tryReadPrintString(const std::string& source, std::string& output);
+    static bool tryReadPrintString(
+        const std::string& source,
+        std::size_t printPos,
+        std::string& output,
+        std::size_t& nextIndex);
 };
 }

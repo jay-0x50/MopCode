@@ -16,8 +16,8 @@ MopCode is designed for gameplay scripting features such as:
 - combat logic
 - entity and component-style gameplay code
 
-The first version is intentionally small.  
-MopCode v0.1 only reads a `.mopc` file and executes a simple `Print("text")` statement.
+The early versions are intentionally small.
+MopCode v0.2 can run a simple `Print("text")` statement and tokenize `.mopc` source code for debugging.
 
 ## Example
 
@@ -34,7 +34,7 @@ cmake --build build
 ```
 If you want to test directly with g++:
 ```bash
-g++ -std=c++17 -Isrc src/main.cpp src/Cli.cpp src/FileResolver.cpp src/Interpreter.cpp -o mopc.exe
+g++ -std=c++17 -Isrc src/main.cpp src/Cli.cpp src/FileResolver.cpp src/Interpreter.cpp src/Lexer.cpp -o mopc.exe
 ```
 ## Run
 From the project root:
@@ -74,18 +74,54 @@ mopc run scripts/boss
 
 mopc run scripts/boss.mopc
 → scripts/boss.mopc
+
+mopc tokens
+→ tokenizes main.mopc
+
+mopc tokens main
+→ tokenizes main.mopc
+
+mopc tokens main.mopc
+→ tokenizes main.mopc
 ```
 If the file name has no extension, MopCode automatically adds .mopc.
+
+## Tokens
+Use the `tokens` command to print the token list for a `.mopc` file:
+
+```powershell
+.\mopc.exe tokens examples/main
+```
+
+Example output:
+
+```txt
+FUNCTION function
+IDENTIFIER main
+LEFT_PAREN (
+RIGHT_PAREN )
+COLON :
+VOID void
+LEFT_BRACE {
+IDENTIFIER Print
+LEFT_PAREN (
+STRING Hello MopCode
+RIGHT_PAREN )
+RIGHT_BRACE }
+EOF
+```
+
 ## Current Status
-MopCode v0.1 supports:
+MopCode v0.2 supports:
 - basic CLI command handling
 - .mopc file loading
 - automatic .mopc extension handling
 - minimal Print("text") execution
+- Lexer-based token scanning
+- `mopc tokens` debug output
 - basic error messages
 
 Not implemented yet:
-- Lexer
 - Parser
 - AST
 - variables
