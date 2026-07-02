@@ -17,13 +17,41 @@ MopCode is designed for gameplay scripting features such as:
 - entity and component-style gameplay code
 
 The early versions are intentionally small.
-MopCode v0.3 can run simple user functions, execute built-in functions, and tokenize `.mopc` source code for debugging.
+MopCode v0.4 can run simple user functions with parameters, execute built-in functions, tokenize `.mopc` source code, and handle basic control flow.
 
 ## Example
 
 ```mopc
 function main(): void {
     Print("Hello MopCode")
+}
+```
+
+Control flow example:
+
+```mopc
+function main(): void {
+    Attack("Boss", 3)
+}
+
+function Attack(target: string, count: int): void {
+    if count > 1 {
+        SetState("ComboAttack")
+    } else {
+        SetState("SingleAttack")
+    }
+
+    for i = 1, count {
+        Print("Hit " + i)
+    }
+}
+```
+
+C++-style parameter order is also supported:
+
+```mopc
+function Attack(string target, int count): void {
+    Print(target)
 }
 ```
 ## Build
@@ -123,6 +151,28 @@ MopCode currently supports a small set of built-in functions:
 - `Spawn("Name")`
 - `SetState("StateName")`
 
+## Control Flow
+
+MopCode currently supports basic `if / else` blocks:
+
+```mopc
+if count > 1 {
+    Print("many")
+} else {
+    Print("one")
+}
+```
+
+It also supports simple inclusive `for` loops:
+
+```mopc
+for i = 0, 3 {
+    Print(i)
+}
+```
+
+This prints `0`, `1`, `2`, and `3`.
+
 Example:
 
 ```mopc
@@ -140,7 +190,7 @@ function StartBossFight(): void {
 ```
 
 ## Current Status
-MopCode v0.3 supports:
+MopCode v0.4 supports:
 - basic CLI command handling
 - .mopc file loading
 - automatic .mopc extension handling
@@ -148,15 +198,18 @@ MopCode v0.3 supports:
 - Lexer-based token scanning
 - `mopc tokens` debug output
 - no-parameter user function calls
+- user function parameters
+- `if / else`
+- inclusive `for` loops
+- basic math and comparison expressions
 - basic built-in functions for debug and gameplay-style scripting
 - basic error messages
 
 Not implemented yet:
 - AST
 - variables
-- function parameters
+- local variable declarations
 - types
-- control flow
 - bytecode
 - VM
 ## Note

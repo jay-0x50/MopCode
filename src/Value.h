@@ -57,6 +57,23 @@ public:
         return bool_;
     }
 
+    bool isTruthy() const
+    {
+        switch (type_)
+        {
+        case Type::Void:
+            return false;
+        case Type::Number:
+            return number_ != 0.0;
+        case Type::String:
+            return !string_.empty();
+        case Type::Bool:
+            return bool_;
+        }
+
+        return false;
+    }
+
     std::string toString() const
     {
         switch (type_)
