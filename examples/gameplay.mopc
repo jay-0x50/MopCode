@@ -1,0 +1,12 @@
+function main(): void {
+    Print("MopCode Gameplay Test")
+    StartBossFight()
+    Print(RandomInt(1, 10))
+    Print(DeltaTime())
+}
+
+function StartBossFight(): void {
+    Log("Boss fight started")
+    Spawn("Boss")
+    SetState("Attack")
+}
