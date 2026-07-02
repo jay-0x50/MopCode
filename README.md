@@ -17,7 +17,7 @@ MopCode is designed for gameplay scripting features such as:
 - entity and component-style gameplay code
 
 The early versions are intentionally small.
-MopCode v0.2 can run a simple `Print("text")` statement and tokenize `.mopc` source code for debugging.
+MopCode v0.3 can run simple user functions, execute built-in functions, and tokenize `.mopc` source code for debugging.
 
 ## Example
 
@@ -111,21 +111,50 @@ RIGHT_BRACE }
 EOF
 ```
 
+## Built-in Functions
+
+MopCode currently supports a small set of built-in functions:
+
+- `Print(value)`
+- `Log(value)`
+- `RandomInt(min, max)`
+- `RandomFloat(min, max)`
+- `DeltaTime()`
+- `Spawn("Name")`
+- `SetState("StateName")`
+
+Example:
+
+```mopc
+function main(): void {
+    Print("MopCode Gameplay Test")
+    StartBossFight()
+    Print(RandomInt(1, 10))
+}
+
+function StartBossFight(): void {
+    Log("Boss fight started")
+    Spawn("Boss")
+    SetState("Attack")
+}
+```
+
 ## Current Status
-MopCode v0.2 supports:
+MopCode v0.3 supports:
 - basic CLI command handling
 - .mopc file loading
 - automatic .mopc extension handling
 - minimal Print("text") execution
 - Lexer-based token scanning
 - `mopc tokens` debug output
+- no-parameter user function calls
+- basic built-in functions for debug and gameplay-style scripting
 - basic error messages
 
 Not implemented yet:
-- Parser
 - AST
 - variables
-- functions
+- function parameters
 - types
 - control flow
 - bytecode
