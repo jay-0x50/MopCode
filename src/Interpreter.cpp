@@ -247,41 +247,56 @@ bool Interpreter::executeIf(
     Environment& environment) const
 {
     ++current;
-    Value condition;
-    if (!parseExpression(body, current, functions, environment, condition))
-    {
-        return false;
-    }
+    bool branchExecuted = false;
 
-    std::vector<Token> thenBlock;
-    if (!readBlock(body, current, thenBlock))
+    while (true)
     {
-        return false;
-    }
+        Value condition;
+        if (!parseExpression(body, current, functions, environment, condition))
+        {
+            return false;
+        }
 
-    std::vector<Token> elseBlock;
-    bool hasElse = false;
-    if (current < body.size() && body[current].type == TokenType::Else)
-    {
+        std::vector<Token> branchBlock;
+        if (!readBlock(body, current, branchBlock))
+        {
+            return false;
+        }
+
+        if (!branchExecuted && condition.isTruthy())
+        {
+            if (!executeBody(branchBlock, functions, environment))
+            {
+                return false;
+            }
+            branchExecuted = true;
+        }
+
+        if (current >= body.size() || body[current].type != TokenType::Else)
+        {
+            return true;
+        }
+
         ++current;
-        hasElse = true;
+        if (current < body.size() && body[current].type == TokenType::If)
+        {
+            ++current;
+            continue;
+        }
+
+        std::vector<Token> elseBlock;
         if (!readBlock(body, current, elseBlock))
         {
             return false;
         }
-    }
 
-    if (condition.isTruthy())
-    {
-        return executeBody(thenBlock, functions, environment);
-    }
+        if (!branchExecuted)
+        {
+            return executeBody(elseBlock, functions, environment);
+        }
 
-    if (hasElse)
-    {
-        return executeBody(elseBlock, functions, environment);
+        return true;
     }
-
-    return true;
 }
 
 bool Interpreter::executeFor(
@@ -291,6 +306,11 @@ bool Interpreter::executeFor(
     Environment& environment) const
 {
     ++current;
+    if (current < body.size() && isTypeToken(body[current].type))
+    {
+        ++current;
+    }
+
     if (current >= body.size() || body[current].type != TokenType::Identifier)
     {
         printError("expected loop variable after for");

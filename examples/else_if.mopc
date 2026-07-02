@@ -1,0 +1,15 @@
+function main(): void {
+    CheckHealth(80)
+    CheckHealth(40)
+    CheckHealth(0)
+}
+
+function CheckHealth(int hp): void {
+    if hp > 70 {
+        SetState("Attack")
+    } else if hp > 0 {
+        SetState("Defend")
+    } else {
+        SetState("Dead")
+    }
+}
