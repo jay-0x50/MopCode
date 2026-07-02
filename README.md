@@ -17,7 +17,7 @@ MopCode is designed for gameplay scripting features such as:
 - entity and component-style gameplay code
 
 The early versions are intentionally small.
-MopCode v0.4 can run simple user functions with parameters, execute built-in functions, tokenize `.mopc` source code, and handle basic control flow.
+MopCode v0.5 can run simple user functions with parameters, execute built-in functions, tokenize `.mopc` source code, and handle basic control flow.
 
 ## Example
 
@@ -154,12 +154,15 @@ MopCode currently supports a small set of built-in functions:
 ## Control Flow
 
 MopCode currently supports basic `if / else` blocks:
+MopCode currently supports `if / else if / else` blocks:
 
 ```mopc
 if count > 1 {
     Print("many")
-} else {
+} else if count == 1 {
     Print("one")
+} else {
+    Print("none")
 }
 ```
 
@@ -172,6 +175,14 @@ for i = 0, 3 {
 ```
 
 This prints `0`, `1`, `2`, and `3`.
+
+C++-style loop variable types are also accepted:
+
+```mopc
+for int i = 0, 3 {
+    Print(i)
+}
+```
 
 Example:
 
@@ -190,7 +201,7 @@ function StartBossFight(): void {
 ```
 
 ## Current Status
-MopCode v0.4 supports:
+MopCode v0.5 supports:
 - basic CLI command handling
 - .mopc file loading
 - automatic .mopc extension handling
@@ -199,7 +210,7 @@ MopCode v0.4 supports:
 - `mopc tokens` debug output
 - no-parameter user function calls
 - user function parameters
-- `if / else`
+- `if / else if / else`
 - inclusive `for` loops
 - basic math and comparison expressions
 - basic built-in functions for debug and gameplay-style scripting
